@@ -1,14 +1,13 @@
 const fs = require('fs');
-const path = require('node:path'); 
-let __file = "./secret-folder";
+const path = require('node:path');
 
-fs.readdir("./secret-folder", {withFileTypes: true}, (err, files) => {
+fs.readdir("./03-files-in-folder/secret-folder", {withFileTypes: true}, (err, files) => {
     if (err){
         console.log(err);
     }
     else {
         files.forEach(file => {
-            __file = "./secret-folder/"+path.basename(file.name);
+            let __file = "./03-files-in-folder/secret-folder/"+path.basename(file.name);
             fs.stat(__file, (err, stats) => {
                 if (err) {
                     console.error(err)
