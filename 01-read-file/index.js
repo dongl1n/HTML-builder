@@ -5,7 +5,3 @@ stream.on('readable', function(){
     var data = stream.read();
     if(data) process.stdout.write(data);
 });
-
-stream.on('end', function(){
-    console.log("END FILE");
-});
