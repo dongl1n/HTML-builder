@@ -16,7 +16,8 @@ fs.readdir("./05-merge-styles/styles", {withFileTypes: true}, (err, files) => { 
                 let stream = new fs.ReadStream(__file, {encoding: 'utf-8'});
                 stream.on('readable', function(){
                     let data = stream.read();
-                    fs.appendFile('./05-merge-styles/project-dist/bundle.css', String(data), (err) => {
+                    let buf;
+                    fs.appendFile('./05-merge-styles/project-dist/bundle.css', buf = String((data===null)?"":data), (err) => {
                         if (err){
                             console.log(err);
                         }
