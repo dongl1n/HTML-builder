@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('node:path');
+const path = require('path');
 
 fs.readdir("./06-build-page/assets", {withFileTypes: true}, (err, dirs) => {
     if (err){

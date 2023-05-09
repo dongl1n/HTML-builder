@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('node:path');
+const path = require('path');
 
 fs.readdir("./05-merge-styles/styles", {withFileTypes: true}, (err, files) => { //Чтение содержимого папки **styles**
     if (err){
