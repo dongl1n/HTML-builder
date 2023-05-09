@@ -1,5 +1,5 @@
 let fs = require('fs');
-const path = require('node:path');
+const path = require('path');
 
 fs.stat('./04-copy-directory/files-copy', function(err) {
     if (!err) {
@@ -12,12 +12,14 @@ fs.stat('./04-copy-directory/files-copy', function(err) {
             console.log('Директория успешно создана');
         });
     }
+    let list=[];
     fs.readdir("./04-copy-directory/files", {withFileTypes: true}, (err, files) => {
         if (err){
             console.log(err);
         }
         else {
             files.forEach(file => {
+                list.push(path.basename(file.name));
                 let __file = "./04-copy-directory/files/"+path.basename(file.name);
                 let __fileCopy = "./04-copy-directory/files-copy/"+path.basename(file.name);
                 console.log(__file)
@@ -28,4 +30,20 @@ fs.stat('./04-copy-directory/files-copy', function(err) {
             })
         }
     });
+    fs.readdir("./04-copy-directory/files-copy/", {withFileTypes: true}, (err, files) => {
+        if (err){
+            console.log(err);
+        }
+        else {
+            files.forEach(file => {
+                if(!list.includes(path.basename(file.name))){
+                    fs.unlink( "./04-copy-directory/files-copy/"+path.basename(file.name), err => {
+                        if(err) throw err; // не удалось удалить файл
+                        console.log('Файл успешно удалён');
+                    });
+                }
+            })
+        }
+    });
+    
 });
