@@ -17,6 +17,8 @@ fs.readdir("./06-build-page/assets", {withFileTypes: true}, (err, dirs) => {
     }
 });
 
+let styles = {};
+
 fs.readdir("./06-build-page/styles", {withFileTypes: true}, (err, files) => {
     if (err){
         console.log(err);
@@ -32,7 +34,12 @@ fs.readdir("./06-build-page/styles", {withFileTypes: true}, (err, files) => {
                 let stream = new fs.ReadStream(__file, {encoding: 'utf-8'});
                 stream.on('readable', function(){
                     let data = stream.read();
-                    fs.appendFile("./06-build-page/project-dist/style.css", String(data), (err) => {
+                    switch(__file){
+                        case "./06-build-page/styles/header.css": { if(data) styles.header=data; break;}
+                        case "./06-build-page/styles/main.css": { if(data) styles.main=data; break;}
+                        case "./06-build-page/styles/footer.css": { if(data) styles.footer=data; break;}
+                    }
+                    fs.writeFile("./06-build-page/project-dist/style.css", styles.header+styles.main+styles.footer, (err) => {
                         if (err){
                             console.log(err);
                         }
@@ -73,7 +80,8 @@ stream.on('readable', function(){
         dataIndex = dataIndex.replace(/{{articles}}/, dataArticle);
         dataIndex = dataIndex.replace(/{{footer}}/, dataFooter);
     }
-    fs.appendFile("./06-build-page/project-dist/index.html", String(dataIndex), (err) => {
+    let buf;
+    fs.appendFile("./06-build-page/project-dist/index.html", buf = String((dataIndex===null)?"":dataIndex), (err) => {
         if (err){
             console.log(err);
         }
@@ -81,4 +89,52 @@ stream.on('readable', function(){
             console.log("index.html перезаписан");
         }
     });
+});
+
+fs.readdir("./06-build-page/assets/fonts", {withFileTypes: true}, (err, files) => {
+    if (err){
+        console.log(err);
+    }
+    else {
+        files.forEach(file => {
+            let __file = "./06-build-page/assets/fonts/"+path.basename(file.name);
+            let __fileCopy = "./06-build-page/project-dist/assets/fonts/"+path.basename(file.name);
+            fs.copyFile(__file, __fileCopy, err => {
+                if(err) throw err; // не удалось скопировать файл
+                console.log('Файл успешно скопирован');
+            });
+        })
+    }
+});
+
+fs.readdir("./06-build-page/assets/img", {withFileTypes: true}, (err, files) => {
+    if (err){
+        console.log(err);
+    }
+    else {
+        files.forEach(file => {
+            let __file = "./06-build-page/assets/img/"+path.basename(file.name);
+            let __fileCopy = "./06-build-page/project-dist/assets/img/"+path.basename(file.name);
+            fs.copyFile(__file, __fileCopy, err => {
+                if(err) throw err; // не удалось скопировать файл
+                console.log('Файл успешно скопирован');
+            });
+        })
+    }
+});
+
+fs.readdir("./06-build-page/assets/svg", {withFileTypes: true}, (err, files) => {
+    if (err){
+        console.log(err);
+    }
+    else {
+        files.forEach(file => {
+            let __file = "./06-build-page/assets/svg/"+path.basename(file.name);
+            let __fileCopy = "./06-build-page/project-dist/assets/svg/"+path.basename(file.name);
+            fs.copyFile(__file, __fileCopy, err => {
+                if(err) throw err; // не удалось скопировать файл
+                console.log('Файл успешно скопирован');
+            });
+        })
+    }
 });
