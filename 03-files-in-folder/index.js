@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('node:path');
+const path = require('path');
 
 fs.readdir("./03-files-in-folder/secret-folder", {withFileTypes: true}, (err, files) => {
     if (err){
@@ -13,6 +13,7 @@ fs.readdir("./03-files-in-folder/secret-folder", {withFileTypes: true}, (err, fi
                     console.error(err)
                     return;
                 }
+                if(!stats.isDirectory())
                 console.log(path.basename(file.name, path.extname(file.name)) + " - " + path.extname(file.name) + " - " + stats.size/1024 + "kb");
             })
         })
